@@ -20,6 +20,16 @@ function randomWord() {
   }
 };
 
+function stopGame() {
+  if (+correctCount.textContent === 5) {
+    clearInterval(intervalId);
+    alert(`Победа! Ваше время ${timer.textContent}`);
+  } else if (+wrongCount.textContent === 5) {
+    clearInterval(intervalId);
+    alert('Вы проиграли!');
+  }
+}
+
 randomWord();
 
 
@@ -31,7 +41,11 @@ document.addEventListener('keydown', function(event) {
       letterSpans[letterIndex].classList.add('c');
       letterIndex++;
       if (letterIndex === word.length) {
-        correctCount.textContent = ++correctCount.textContent;
+        if (+wordMistakes.textContent !== 0) {
+          wrongCount.textContent = ++wrongCount.textContent;
+        } else {
+          correctCount.textContent = ++correctCount.textContent;
+        }
         letterIndex = 0;
         randomWord();
         wordMistakes.textContent = 0; 
@@ -39,10 +53,8 @@ document.addEventListener('keydown', function(event) {
     } else {
       letterSpans[letterIndex].classList.add('w');
       wordMistakes.textContent = ++wordMistakes.textContent;
-      if (+wordMistakes.textContent > 0) {
-          wrongCount.textContent = ++wrongCount.textContent;
-        }
     }
+    stopGame();
 });
 
 const timer = document.querySelector('#timer');
@@ -61,9 +73,4 @@ let intervalId = setInterval(() => {
   const formatMinutes = minutes < 10 ? '0' + minutes : minutes;
   const formatSeconds = seconds < 10 ? '0' + seconds : seconds;
   timer.textContent = `${formatMinutes}:${formatSeconds}`;
-
-  if (+correctCount.textContent === 5) {
-    clearInterval(intervalId);
-    alert(`Победа! Ваше время ${timer.textContent}`);
-  }
 }, 1000);
