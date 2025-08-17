@@ -18,6 +18,7 @@ function randomWord() {
     letter.textContent = word[i];
     container.append(letter);
   }
+  stopGame();
 };
 
 function stopGame() {
@@ -47,14 +48,13 @@ document.addEventListener('keydown', function(event) {
           correctCount.textContent = ++correctCount.textContent;
         }
         letterIndex = 0;
-        randomWord();
+        setTimeout(randomWord, 300);
         wordMistakes.textContent = 0; 
       }
     } else {
       letterSpans[letterIndex].classList.add('w');
       wordMistakes.textContent = ++wordMistakes.textContent;
     }
-    stopGame();
 });
 
 const timer = document.querySelector('#timer');
